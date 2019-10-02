@@ -1,0 +1,12 @@
+name: 'Magic Shell Linter'
+description: 'Execute lint check on Bash scripts'
+author: 'ep-mobile'
+inputs:
+  path:
+    description: 'Path to the bash script that needs the lint check.'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.path }}
