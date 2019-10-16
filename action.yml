@@ -3,8 +3,8 @@ description: 'Execute lint check on Bash scripts'
 author: 'ep-mobile'
 inputs:
   path:
-    description: 'Path to the bash script that needs the lint check.'
-    required: true
+    description: 'Path to the bash scripts that need the lint check.'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
