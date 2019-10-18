@@ -1,0 +1,19 @@
+#! /bin/bash
+
+# This script runs all the test files that can be found at TEST_DIRECTORY path. 
+# Note: test files should be named *tests.sh 
+
+# path of the directory that stores tests
+TEST_DIRECTORY="./tests"
+failed_test=false
+
+while IFS= read -r -d '' file
+do
+    printf "Test Suite: %s \n\n" "$(basename "$file" | sed 's/.sh//g')"
+    if ! eval "$file"; then failed_test=true; fi
+
+done < <(find $TEST_DIRECTORY -iname '*tests.sh' -print0)
+
+if [ "${failed_test}" = true ] ; then 
+    exit 1 
+fi
