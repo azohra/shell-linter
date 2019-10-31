@@ -12,4 +12,4 @@ runs:
     - ${{ inputs.path }}
 branding:
   icon: 'check-circle'
-  color: 'yellow'
+  color: 'green'

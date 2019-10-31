@@ -1,5 +1,6 @@
 # Shell Linter
 
+
 A GitHub Action that performs static analysis for shell scripts using [ShellCheck](https://github.com/koalaman/shellcheck).
 
 ![](docs/images/preview.png)
@@ -8,7 +9,9 @@ A GitHub Action that performs static analysis for shell scripts using [ShellChec
 
 ## Usage
 
-Run static analysis for all of the bash/sh scripts.
+Shell Linter can perform static analysis in various ways. You can use it to lint all the shell scripts in your project or lint a a specific file or folder using the `path` parameter. Specific use cases are shown below:
+
+Run static analysis for all of the shell scripts.
 ```yml
 jobs:
   lint:
@@ -16,30 +19,30 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Lint check
-        uses: azohra/shell-linter@master
+        uses: azohra/shell-linter@v0.1.0
 ```
 
-Run static analysis for a single bash/sh script.
+Run static analysis for a single shell script.
 ```yml
       - name: Lint check
-        uses: azohra/shell-linter@master
+        uses: azohra/shell-linter@v0.1.0
         with:
           path: "setup.sh"
 ```
 
-Run static analysis for multiple bash/sh scripts.
+Run static analysis for multiple shell scripts.
 ```yml
       - name: Lint check
-        uses: azohra/shell-linter@master
+        uses: azohra/shell-linter@v0.1.0
         with:
           path: "setup.sh,deploy.sh"
 ```
 
 
-Run static analysis for all the bash/sh scripts in a folder.
+Run static analysis for all the shell scripts in a folder.
 ```yml
       - name: Lint check
-        uses: azohra/shell-linter@master
+        uses: azohra/shell-linter@v0.1.0
         with:
           path: "src"
 ```
