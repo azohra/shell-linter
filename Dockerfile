@@ -1,7 +1,8 @@
-From ubuntu:18.04
+FROM alpine:3.10.3
 
-RUN apt-get update \ 
-    && apt-get install -qy shellcheck 
+RUN echo "http://dl-5.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories; \
+    apk update \
+    && apk add --no-cache shellcheck
 
 COPY entrypoint.sh /entrypoint.sh
 
