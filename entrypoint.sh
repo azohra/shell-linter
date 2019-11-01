@@ -12,7 +12,6 @@ process_input(){
     fi
 
     if [ -n "$input_paths" ]; then
-        # status_code=0
         for path in $(echo "$input_paths" | tr "," "\n"); do
             if [ -d "$path" ]; then
                 scan_all "$path"
