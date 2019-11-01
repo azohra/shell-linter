@@ -22,7 +22,6 @@ process_input(){
         exit $status_code
     else
         scan_all "$my_dir"
-        exit $status_code
     fi
 }
 
