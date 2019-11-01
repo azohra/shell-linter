@@ -4,14 +4,14 @@ logging_mode="$2"
 execution_mode="$3"
 my_dir=$(pwd)
 VERSION="0.1.0"
+status_code="0"
 
 process_input(){      
     if [ -n "$execution_mode" ]; then
-        my_dir=./test_data
+        my_dir="./test_data"
     fi
 
     if [ -n "$input_paths" ]; then
-        status_code=0
         for path in $(echo "$input_paths" | tr "," "\n"); do
             if [ -d "$path" ]; then
                 scan_all "$path"
@@ -19,10 +19,10 @@ process_input(){
                 scan_file "$path"
             fi
         done
-        exit $status_code
+        if [ -z "$execution_mode" ]; then exit $status_code; fi
     else
         scan_all "$my_dir"
-        exit $status_code
+        if [ -z "$execution_mode" ]; then exit $status_code; fi
     fi
 }
 
