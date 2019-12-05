@@ -1,5 +1,8 @@
 # Shell Linter
 
+[![Release](https://img.shields.io/github/release/azohra/shell-linter.svg)](https://github.com/azohra/shell-linter/releases)
+[![Marketplace](https://img.shields.io/badge/GitHub-Marketplace-red.svg)](https://github.com/marketplace/actions/shell-linter)
+
 
 A GitHub Action that performs static analysis for shell scripts using [ShellCheck](https://github.com/koalaman/shellcheck).
 
@@ -38,13 +41,21 @@ Run static analysis for multiple shell scripts.
           path: "setup.sh,deploy.sh"
 ```
 
-
 Run static analysis for all the shell scripts in a folder.
 ```yml
       - name: Lint check
         uses: azohra/shell-linter@v0.1.0
         with:
           path: "src"
+```
+
+Run static analysis for all the shell scripts that starts with `test-` and contain issues with error severity.
+```yml
+      - name: Lint check
+        uses: azohra/shell-linter@v0.1.0
+        with:
+          path: "src/test-*.sh"
+          severity: "error"
 ```
 
 <br>
@@ -54,4 +65,8 @@ Run static analysis for all the shell scripts in a folder.
 ### `path`
 
 Optional. Execute lint check on a specific file or folder. Default: `.`
+
+### `severity`
+
+Optional. Specify minimum severity of errors to consider [style, info, warning, error]. Default: `style`
 

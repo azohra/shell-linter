@@ -1,6 +1,6 @@
 #! /bin/bash
 input_paths="$1"
-logging_mode="$2"
+severity_mode="$2"
 execution_mode="$3"
 my_dir=$(pwd)
 VERSION="0.1.0"
@@ -11,7 +11,16 @@ process_input(){
         my_dir="./test_data"
     fi
 
-    if [ -n "$input_paths" ]; then
+    severity_mode="$(echo $severity_mode | tr '[:upper:]' '[:lower:]')"
+
+    if [[ "$severity_mode" != "style" && "$severity_mode" != "info" && "$severity_mode" != "warning" && "$severity_mode" != "error" ]]; then
+        if [ -n "$severity_mode" ]; then
+            echo "Error setting unknown severity mode. Defaulting severity mode to style."
+        fi
+        severity_mode="style"
+    fi
+
+    if [ "$input_paths" != "." ]; then
         for path in $(echo "$input_paths" | tr "," "\n"); do
             if [ -d "$path" ]; then
                 scan_all "$path"
@@ -20,7 +29,7 @@ process_input(){
             fi
         done
         if [ -z "$execution_mode" ]; then exit $status_code; fi
-    else
+    else 
         scan_all "$my_dir"
         if [ -z "$execution_mode" ]; then exit $status_code; fi
     fi
@@ -36,7 +45,7 @@ scan_file(){
         echo "###############################################"
         echo "         Scanning $file"
         echo "###############################################"
-        shellcheck "$file_path"
+        shellcheck "$file_path" --severity="$severity_mode"
         local exit_code=$?
         if [ $exit_code -eq 0 ] ; then
             echo "Successfully scanned ${file_path} 🙌"

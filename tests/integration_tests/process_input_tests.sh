@@ -35,6 +35,7 @@ test_invalid_file2_input(){
 }
 
 test_no_input_file(){
+    input_paths="."
     local expected_message="Scanning all the scripts with format name.sh at ./test_data"
     local actual_message=$(process_input)
 
@@ -75,6 +76,17 @@ test_input_directories_with_wildcard() {
     input_paths="./test_data/test_dir*"
     local expected_message1="Scanning all the scripts with format name.sh at ./test_data/test_dir_1"
     local expected_message2="Scanning all the scripts with format name.sh at ./test_data/test_dir_2"
+    local actual_message=$(process_input)
+
+    assertContains "Did not find the message." "$actual_message" "$expected_message1"
+    assertContains "Did not find the message." "$actual_message" "$expected_message2"
+}
+
+test_severity_invalid_mode(){
+    input_paths="./test_data/test_dir_1/valid_script_error.sh"
+    severity_mode="verbose"
+    local expected_message1="Error setting unknown severity mode. Defaulting severity mode to style."
+    local expected_message2="ERROR: ShellCheck detected issues"
     local actual_message=$(process_input)
 
     assertContains "Did not find the message." "$actual_message" "$expected_message1"

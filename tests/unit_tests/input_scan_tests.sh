@@ -1,6 +1,6 @@
 #! /bin/bash
 
-source ./entrypoint.sh "" "" "--debug"
+source ./entrypoint.sh "" "error" "--debug"
 
 
 test_scan_valid_file(){
@@ -27,6 +27,24 @@ test_scan_a_directory(){
     local expected_message3="Scanning invalid script.sh"
     local actual_message=$(scan_all ./test_data/test_dir_1)
 
+    assertContains "$actual_message" "$expected_message1"
+    assertContains "$actual_message" "$expected_message2"
+}
+
+test_scan_valid_file_error(){
+    local expected_message1="Scanning valid_script_error.sh"
+    local expected_message2="ERROR: ShellCheck detected issues"
+    local actual_message=$(scan_all ./test_data/test_dir_1/valid_script_error.sh)
+
+    assertContains "$actual_message" "$expected_message1"
+    assertContains "$actual_message" "$expected_message2"
+}
+
+test_scan_valid_file_warning(){
+    local expected_message1="Scanning valid_script_warning.sh"
+    local expected_message2="Successfully scanned"
+    local actual_message=$(scan_all ./test_data/test_dir_1/valid_script_warning.sh)
+    
     assertContains "$actual_message" "$expected_message1"
     assertContains "$actual_message" "$expected_message2"
 }
