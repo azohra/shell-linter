@@ -36,7 +36,8 @@ test_invalid_file2_input(){
 }
 
 test_no_input_file(){
-    local expected_message="Scanning all the shell scripts at ./test_data"
+    input_paths="."
+    local expected_message="Scanning all the scripts with format name.sh at ./test_data"
     local actual_message=$(process_input)
 
     assertContains "Actual messages:$actual_message Did not contain the expected message.\n" "$actual_message" "$expected_message"
@@ -84,6 +85,17 @@ test_input_directories_with_wildcard() {
 
     assertContains "Actual messages:$actual_message Did not contain the expected message.\n" "$actual_message" "$expected_message1"
     assertContains "Actual messages:$actual_message Did not contain the expected message.\n" "$actual_message" "$expected_message2"
+}
+
+test_severity_invalid_mode(){
+    input_paths="./test_data/test_dir_1/valid_script_error.sh"
+    severity_mode="verbose"
+    local expected_message1="Error setting unknown severity mode. Defaulting severity mode to style."
+    local expected_message2="ERROR: ShellCheck detected issues"
+    local actual_message=$(process_input)
+
+    assertContains "Did not find the message." "$actual_message" "$expected_message1"
+    assertContains "Did not find the message." "$actual_message" "$expected_message2"
 }
 
 tearDown(){

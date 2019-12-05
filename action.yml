@@ -5,11 +5,17 @@ inputs:
   path:
     description: 'Execute lint check on a specific file or folder.'
     required: false
+    default: '.'
+  severity:
+    description: 'Specify minimum severity of errors to consider.'
+    required: false
+    default: 'style'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.path }}
+    - ${{ inputs.severity }}
 branding:
   icon: 'check-circle'
   color: 'green'

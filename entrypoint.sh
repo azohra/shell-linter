@@ -2,16 +2,27 @@
 # shellcheck disable=SC2155
 
 input_paths="$1"
-# TODO:add severity mode
-# severity_mode="$2"
+severity_mode="$2"
 execution_mode="$3"
 my_dir=$(pwd)
 status_code="0"
 
 process_input(){      
-    [ -n "$execution_mode" ] && my_dir="./test_data"
-    
-    if [ -n "$input_paths" ]; then
+
+    if [ -n "$execution_mode" ]; then
+        my_dir="./test_data"
+    fi
+
+    severity_mode="$(echo $severity_mode | tr '[:upper:]' '[:lower:]')"
+
+    if [[ "$severity_mode" != "style" && "$severity_mode" != "info" && "$severity_mode" != "warning" && "$severity_mode" != "error" ]]; then
+        if [ -n "$severity_mode" ]; then
+            echo "Error setting unknown severity mode. Defaulting severity mode to style."
+        fi
+        severity_mode="style"
+    fi
+
+    if [ "$input_paths" != "." ]; then
         for path in $(echo "$input_paths" | tr "," "\n"); do
             if [ -d "$path" ]; then
                 scan_all "$path"
@@ -19,8 +30,9 @@ process_input(){
                 scan_file "$path"
             fi
         done
-        [ -z "$execution_mode" ] && exit $status_code
-    else
+
+        if [ -z "$execution_mode" ]; then exit $status_code; fi
+    else 
         scan_all "$my_dir"
         [ -z "$execution_mode" ] && exit $status_code
     fi
@@ -35,7 +47,7 @@ scan_file(){
         echo "###############################################"
         echo "         Scanning $file"
         echo "###############################################"
-        shellcheck -x "$file_path"
+        shellcheck "$file_path" --severity="$severity_mode"
         local exit_code=$?
         if [ $exit_code -eq 0 ] ; then
             printf "%b" "Successfully scanned ${file_path} 🙌\n"

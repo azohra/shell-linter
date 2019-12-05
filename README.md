@@ -50,13 +50,23 @@ Run static analysis for all the shell scripts in a folder.
           path: "src"
 ```
 
-Run static analysis using a **wildcard** path
+Run static analysis using a **wildcard** path.
 ```yml
       - name: Lint check
         uses: azohra/shell-linter@v0.3.0
         with:
           path: "src/*.sh"
 ```
+
+Run static analysis for all the shell scripts and only report issue with error severity.
+```yml
+      - name: Lint check
+        uses: azohra/shell-linter@v0.3.0
+        with:
+          path: "src/*.sh"
+          severity: "error"
+```
+
 <br>
 
 ## Input
@@ -65,5 +75,15 @@ Run static analysis using a **wildcard** path
 
 Optional. Execute lint check on a specific file or folder. Default: `.`
 
+### `severity`
+
+Optional. Specify minimum severity of errors to consider [style, info, warning, error]. Default: `style`
+
+<br>
+
 ## License
 This software is available as open source under the terms of the MIT License.
+
+
+
+
