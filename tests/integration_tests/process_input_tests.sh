@@ -21,7 +21,7 @@ test_valid_file_input(){
 
 test_invalid_file1_input(){
     input_paths="./test_data/test.txt"
-    local expected="Warning: './test_data/test.txt' is not a valid shell script. Make sure shebang is on the first line"
+    local expected="Warning: './test_data/test.txt' is not a valid shell scriptttt. Make sure shebang is on the first line."
     local actual=$(process_input)
 
     assertContains "Actual messages:$actual Did not contain the expected message.\n" "$actual" "$expected" 
