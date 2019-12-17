@@ -1,6 +1,10 @@
 name: PR-workflow
 
-on: pull_request
+on: 
+  pull_request 
+  push:
+    branches:
+      - test_branch
 
 jobs:
   run_tests:
