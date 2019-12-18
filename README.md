@@ -65,3 +65,5 @@ Run static analysis using a **wildcard** path
 
 Optional. Execute lint check on a specific file or folder. Default: `.`
 
+## License
+This software is available as open source under the terms of the MIT License.
