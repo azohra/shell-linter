@@ -4,18 +4,20 @@ on:
   push: 
     branches:
       - master
-
 jobs:
   github_release:  
     runs-on: ubuntu-latest 
     steps:
     - name: Checkout 
       uses: actions/checkout@v1
+    - name: Get version
+      id: app-version
+      run: echo ::set-output name=VERSION::$(./docs/version)
     - name: Tag commit and release
       uses: ncipollo/release-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        tag: "v0.1.0"
+        tag: ${{ steps.app-version.outputs.VERSION }}
         commit: master
-        name: First Release
-        bodyFile: ./docs/release_notes/v0.1.0.md
+        name: Shell Linter v0.2.0
+        bodyFile: ./docs/release_notes/v0.2.0.md
