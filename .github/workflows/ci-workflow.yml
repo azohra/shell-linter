@@ -1,6 +1,10 @@
-name: PR-workflow
+name: CI-workflow
 
-on: pull_request
+on: 
+  pull_request:
+  push:
+    branches:
+      - develop
 
 jobs:
   run_tests:

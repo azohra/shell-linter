@@ -1,5 +1,9 @@
 # Shell Linter
 
+[![Release](https://img.shields.io/github/release/azohra/shell-linter.svg)](https://github.com/azohra/shell-linter/releases)
+[![Marketplace](https://img.shields.io/badge/GitHub-Marketplace-red.svg)](https://github.com/marketplace/actions/shell-linter)
+[![Actions Status](https://github.com/azohra/shell-linter/workflows/CI-workflow/badge.svg)](https://github.com/azohra/shell-linter/actions?query=branch%3Adevelop)
+
 
 A GitHub Action that performs static analysis for shell scripts using [ShellCheck](https://github.com/koalaman/shellcheck).
 
@@ -30,14 +34,13 @@ Run static analysis for a single shell script.
           path: "setup.sh"
 ```
 
-Run static analysis for multiple shell scripts.
+Run static analysis for multiple shell scripts **with or without** extension.
 ```yml
       - name: Lint check
         uses: azohra/shell-linter@v0.1.0
         with:
-          path: "setup.sh,deploy.sh"
+          path: "setup,deploy.sh"
 ```
-
 
 Run static analysis for all the shell scripts in a folder.
 ```yml
@@ -47,6 +50,13 @@ Run static analysis for all the shell scripts in a folder.
           path: "src"
 ```
 
+Run static analysis using a **wildcard** path
+```yml
+      - name: Lint check
+        uses: azohra/shell-linter@v0.1.0
+        with:
+          path: "src/*.sh"
+```
 <br>
 
 ## Input
@@ -55,3 +65,5 @@ Run static analysis for all the shell scripts in a folder.
 
 Optional. Execute lint check on a specific file or folder. Default: `.`
 
+## License
+This software is available as open source under the terms of the MIT License.
