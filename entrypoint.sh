@@ -2,7 +2,7 @@
 # shellcheck disable=SC2155
 
 input_paths="$1"
-severity_mode="$2"
+severity_mode="${2-style}"
 execution_mode="$3"
 my_dir=$(pwd)
 status_code="0"
@@ -16,9 +16,7 @@ process_input(){
     severity_mode="$(echo $severity_mode | tr '[:upper:]' '[:lower:]')"
 
     if [[ "$severity_mode" != "style" && "$severity_mode" != "info" && "$severity_mode" != "warning" && "$severity_mode" != "error" ]]; then
-        if [ -n "$severity_mode" ]; then
-            echo "Error setting unknown severity mode. Defaulting severity mode to style."
-        fi
+        echo "Error setting unknown severity mode. Defaulting severity mode to style."
         severity_mode="style"
     fi
 

@@ -1,7 +1,7 @@
 #! /bin/bash
 # shellcheck disable=SC2155
 
-source ./entrypoint.sh "" "error" "--debug"
+source ./entrypoint.sh "" "" "--debug"
 
 
 test_scan_valid_file_1(){
@@ -33,25 +33,6 @@ test_scan_a_directory(){
     assertContains "Actual messages:$actual_message Did not contain the expected message.\n" "$actual_message" "$message2"
     assertContains "Actual messages:$actual_message Did not contain the expected message.\n" "$actual_message" "$message3"
     assertContains "Actual messages:$actual_message contains the expected message.\n" "$actual_message" "$message4"
-
-}
-
-test_scan_valid_file_error(){
-    local expected_message1="Scanning valid_script_error.sh"
-    local expected_message2="ERROR: ShellCheck detected issues"
-    local actual_message=$(scan_all ./test_data/test_dir_1/valid_script_error.sh)
-
-    assertContains "$actual_message" "$expected_message1"
-    assertContains "$actual_message" "$expected_message2"
-}
-
-test_scan_valid_file_warning(){
-    local expected_message1="Scanning valid_script_warning.sh"
-    local expected_message2="Successfully scanned"
-    local actual_message=$(scan_all ./test_data/test_dir_1/valid_script_warning.sh)
-    
-    assertContains "$actual_message" "$expected_message1"
-    assertContains "$actual_message" "$expected_message2"
 }
 
 source ./tests/shunit2

@@ -35,9 +35,9 @@ test_invalid_file2_input(){
     assertContains "Actual messages:$actual Did not contain the expected message.\n" "$actual" "$expected" 
 }
 
-test_no_input_file(){
+test_default_input_file(){
     input_paths="."
-    local expected_message="Scanning all the scripts with format name.sh at ./test_data"
+    local expected_message="Scanning all the shell scripts at ./test_data"
     local actual_message=$(process_input)
 
     assertContains "Actual messages:$actual_message Did not contain the expected message.\n" "$actual_message" "$expected_message"
@@ -96,6 +96,36 @@ test_severity_invalid_mode(){
 
     assertContains "Did not find the message." "$actual_message" "$expected_message1"
     assertContains "Did not find the message." "$actual_message" "$expected_message2"
+}
+
+test_error_file_severity_error(){
+    severity_mode="error"
+    local expected_message1="Scanning valid_script_error.sh"
+    local expected_message2="ERROR: ShellCheck detected issues"
+    local actual_message=$(scan_all ./test_data/test_dir_1/valid_script_error.sh)
+
+    assertContains "$actual_message" "$expected_message1"
+    assertContains "$actual_message" "$expected_message2"
+}
+
+test_error_file_severity_warning(){
+    severity_mode="warning"
+    local expected_message1="Scanning valid_script_error.sh"
+    local expected_message2="ERROR: ShellCheck detected issues"
+    local actual_message=$(scan_all ./test_data/test_dir_1/valid_script_error.sh)
+
+    assertContains "$actual_message" "$expected_message1"
+    assertContains "$actual_message" "$expected_message2"
+}
+
+test_warning_file_severity_error(){
+    severity_mode="error"
+    local expected_message1="Scanning valid_script_warning.sh"
+    local expected_message2="Successfully scanned"
+    local actual_message=$(scan_all ./test_data/test_dir_1/valid_script_warning.sh)
+
+    assertContains "$actual_message" "$expected_message1"
+    assertContains "$actual_message" "$expected_message2"
 }
 
 tearDown(){
