@@ -87,45 +87,103 @@ test_input_directories_with_wildcard() {
     assertContains "Actual messages:$actual_message Did not contain the expected message.\n" "$actual_message" "$expected_message2"
 }
 
-test_severity_invalid_mode(){
-    input_paths="./test_data/test_dir_1/valid_script_error.sh"
+test_severity_mode_invalid(){
+    input_paths="./test_data/test_dir_3/test_script_warning.sh"
     severity_mode="verbose"
     local expected_message1="Error setting unknown severity mode. Defaulting severity mode to style."
     local expected_message2="ERROR: ShellCheck detected issues"
+    local expected_message3="SC2053"
+    local expected_message4="SC2164"
+    local expected_message5="SC2143"
     local actual_message=$(process_input)
 
     assertContains "Did not find the message." "$actual_message" "$expected_message1"
     assertContains "Did not find the message." "$actual_message" "$expected_message2"
+    assertContains "Did not find the message." "$actual_message" "$expected_message3"
+    assertContains "Did not find the message." "$actual_message" "$expected_message4"
+    assertContains "Did not find the message." "$actual_message" "$expected_message5"
 }
 
-test_error_file_severity_error(){
+test_severity_mode_error(){
+    input_paths="./test_data/test_dir_3/test_script_error.sh"
     severity_mode="error"
-    local expected_message1="Scanning valid_script_error.sh"
+    local expected_message1="Scanning test_script_error.sh"
     local expected_message2="ERROR: ShellCheck detected issues"
-    local actual_message=$(scan_all ./test_data/test_dir_1/valid_script_error.sh)
+    local expected_message3="C1073"
+    local actual_message=$(process_input)
 
-    assertContains "$actual_message" "$expected_message1"
-    assertContains "$actual_message" "$expected_message2"
+    assertContains "Did not find the message." "$actual_message" "$expected_message1"
+    assertContains "Did not find the message." "$actual_message" "$expected_message2"
+    assertContains "Did not find the message." "$actual_message" "$expected_message3"
+
+    input_paths="./test_data/test_dir_3/test_script_warning.sh"
+    local expected_message4="Scanning test_script_warning.sh"
+    local expected_message5="Successfully scanned"
+    local expected_message6="SC2053"
+    local actual_message=$(process_input)
+
+    assertContains "Did not find the message." "$actual_message" "$expected_message4"
+    assertContains "Did not find the message." "$actual_message" "$expected_message5"
+    assertNotContains "Did find the message." "$actual_message" "$expected_message6"
 }
 
-test_error_file_severity_warning(){
+test_severity_mode_warning(){
+    input_paths="./test_data/test_dir_3/test_script_warning.sh"
     severity_mode="warning"
-    local expected_message1="Scanning valid_script_error.sh"
+    local expected_message1="Scanning test_script_warning.sh"
     local expected_message2="ERROR: ShellCheck detected issues"
-    local actual_message=$(scan_all ./test_data/test_dir_1/valid_script_error.sh)
+    local expected_message3="SC2053"
+    local expected_message4="SC2164"
+    local expected_message5="SC2143"
+    local expected_message6="SC2035"
+    local expected_message7="Error setting unknown severity mode. Defaulting severity mode to style."
+    local actual_message=$(process_input)
 
-    assertContains "$actual_message" "$expected_message1"
-    assertContains "$actual_message" "$expected_message2"
+    assertContains "Did not find the message." "$actual_message" "$expected_message1"
+    assertContains "Did not find the message." "$actual_message" "$expected_message2"
+    assertContains "Did not find the message." "$actual_message" "$expected_message3"
+    assertContains "Did not find the message." "$actual_message" "$expected_message4"
+    assertNotContains "Did find the message." "$actual_message" "$expected_message5"
+    assertNotContains "Did find the message." "$actual_message" "$expected_message6"
+    assertNotContains "Did find the message." "$actual_message" "$expected_message7"
 }
 
-test_warning_file_severity_error(){
-    severity_mode="error"
-    local expected_message1="Scanning valid_script_warning.sh"
-    local expected_message2="Successfully scanned"
-    local actual_message=$(scan_all ./test_data/test_dir_1/valid_script_warning.sh)
+test_severity_mode_info(){
+    input_paths="./test_data/test_dir_3/test_script_warning.sh"
+    severity_mode="info"
+    local expected_message1="Scanning test_script_warning.sh"
+    local expected_message2="ERROR: ShellCheck detected issues"
+    local expected_message3="SC2053"
+    local expected_message4="SC2164"
+    local expected_message5="SC2143"
+    local expected_message6="Error setting unknown severity mode. Defaulting severity mode to style."
+    local actual_message=$(process_input)
 
-    assertContains "$actual_message" "$expected_message1"
-    assertContains "$actual_message" "$expected_message2"
+    assertContains "Did not find the message." "$actual_message" "$expected_message1"
+    assertContains "Did not find the message." "$actual_message" "$expected_message2"
+    assertContains "Did not find the message." "$actual_message" "$expected_message3"
+    assertContains "Did not find the message." "$actual_message" "$expected_message4"
+    assertNotContains "Did find the message." "$actual_message" "$expected_message5"
+    assertNotContains "Did find the message." "$actual_message" "$expected_message6"
+}
+
+test_severity_mode_style(){
+    input_paths="./test_data/test_dir_3/test_script_warning.sh"
+    severity_mode="style"
+    local expected_message1="Scanning test_script_warning.sh"
+    local expected_message2="ERROR: ShellCheck detected issues"
+    local expected_message3="SC2053"
+    local expected_message4="SC2164"
+    local expected_message5="SC2143"
+    local expected_message6="Error setting unknown severity mode. Defaulting severity mode to style."
+    local actual_message=$(process_input)
+
+    assertContains "Did not find the message." "$actual_message" "$expected_message1"
+    assertContains "Did not find the message." "$actual_message" "$expected_message2"
+    assertContains "Did not find the message." "$actual_message" "$expected_message3"
+    assertContains "Did not find the message." "$actual_message" "$expected_message4"
+    assertContains "Did not find the message." "$actual_message" "$expected_message5"
+    assertNotContains "Did find the message." "$actual_message" "$expected_message6"
 }
 
 tearDown(){
