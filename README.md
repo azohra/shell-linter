@@ -83,7 +83,3 @@ Optional. Specify minimum severity of errors to consider [style, info, warning, 
 
 ## License
 This software is available as open source under the terms of the MIT License.
-
-
-
-

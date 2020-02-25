@@ -8,10 +8,7 @@ my_dir=$(pwd)
 status_code="0"
 
 process_input(){      
-
-    if [ -n "$execution_mode" ]; then
-        my_dir="./test_data"
-    fi
+    [ -n "$execution_mode" ] && my_dir="./test_data"
 
     severity_mode="$(echo $severity_mode | tr '[:upper:]' '[:lower:]')"
 
@@ -28,8 +25,7 @@ process_input(){
                 scan_file "$path"
             fi
         done
-
-        if [ -z "$execution_mode" ]; then exit $status_code; fi
+        [ -z "$execution_mode" ] && exit $status_code
     else 
         scan_all "$my_dir"
         [ -z "$execution_mode" ] && exit $status_code
