@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: Update Shellcheck
+        run: ./src/download_shellcheck.sh
       - name: Run tests
         run: ./tests/test_runner
         shell: bash
