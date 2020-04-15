@@ -19,5 +19,5 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ steps.app-version.outputs.VERSION }}
         commit: master
-        name: Shell Linter v0.2.0
-        bodyFile: ./docs/release_notes/v0.2.0.md
+        name: Shell Linter v0.3.0
+        bodyFile: ./docs/release_notes/v0.3.0.md
