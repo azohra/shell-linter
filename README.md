@@ -23,13 +23,13 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Lint check
-        uses: azohra/shell-linter@v0.1.0
+        uses: azohra/shell-linter@v0.3.0
 ```
 
 Run static analysis for a single shell script.
 ```yml
       - name: Lint check
-        uses: azohra/shell-linter@v0.1.0
+        uses: azohra/shell-linter@v0.3.0
         with:
           path: "setup.sh"
 ```
@@ -37,7 +37,7 @@ Run static analysis for a single shell script.
 Run static analysis for multiple shell scripts **with or without** extension.
 ```yml
       - name: Lint check
-        uses: azohra/shell-linter@v0.1.0
+        uses: azohra/shell-linter@v0.3.0
         with:
           path: "setup,deploy.sh"
 ```
@@ -45,7 +45,7 @@ Run static analysis for multiple shell scripts **with or without** extension.
 Run static analysis for all the shell scripts in a folder.
 ```yml
       - name: Lint check
-        uses: azohra/shell-linter@v0.1.0
+        uses: azohra/shell-linter@v0.3.0
         with:
           path: "src"
 ```
@@ -53,7 +53,7 @@ Run static analysis for all the shell scripts in a folder.
 Run static analysis using a **wildcard** path
 ```yml
       - name: Lint check
-        uses: azohra/shell-linter@v0.1.0
+        uses: azohra/shell-linter@v0.3.0
         with:
           path: "src/*.sh"
 ```
