@@ -33,7 +33,6 @@ test_scan_a_directory(){
     assertContains "Actual messages:$actual_message Did not contain the expected message.\n" "$actual_message" "$message2"
     assertContains "Actual messages:$actual_message Did not contain the expected message.\n" "$actual_message" "$message3"
     assertContains "Actual messages:$actual_message contains the expected message.\n" "$actual_message" "$message4"
-
 }
 
 source ./tests/shunit2

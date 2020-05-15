@@ -11,59 +11,78 @@ A GitHub Action that performs static analysis for shell scripts using [ShellChec
 
 <br>
 
-## Usage
+# Usage
 
-Shell Linter can perform static analysis in various ways. You can use it to lint all the shell scripts in your project or lint a a specific file or folder using the `path` parameter. Specific use cases are shown below:
+Shell Linter can perform static analysis in various ways. You can use it to lint all the shell scripts in your project or lint a specific file or folder using the `path` parameter. Specific use cases are shown below:
 
-Run static analysis for all of the shell scripts.
+Run static analysis for all shell scripts in your repository:
 ```yml
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
       - uses: actions/checkout@v1
-      - name: Lint check
-        uses: azohra/shell-linter@v0.3.0
+      - name: Run Shellcheck
+        uses: azohra/shell-linter@latest
 ```
 
-Run static analysis for a single shell script.
+Run static analysis for a single shell script:
 ```yml
-      - name: Lint check
-        uses: azohra/shell-linter@v0.3.0
+      - name: Run Shellcheck
+        uses: azohra/shell-linter@latest
         with:
           path: "setup.sh"
 ```
 
-Run static analysis for multiple shell scripts **with or without** extension.
+Run static analysis for multiple shell scripts **with or without** extension:
 ```yml
-      - name: Lint check
-        uses: azohra/shell-linter@v0.3.0
+      - name: Run Shellcheck
+        uses: azohra/shell-linter@latest
         with:
           path: "setup,deploy.sh"
 ```
 
-Run static analysis for all the shell scripts in a folder.
+Run static analysis for all the shell scripts in a folder:
 ```yml
-      - name: Lint check
-        uses: azohra/shell-linter@v0.3.0
+      - name: Run Shellcheck
+        uses: azohra/shell-linter@latest
         with:
           path: "src"
 ```
 
-Run static analysis using a **wildcard** path
+Run static analysis using a **wildcard** path:
 ```yml
-      - name: Lint check
-        uses: azohra/shell-linter@v0.3.0
+      - name: Run Shellcheck
+        uses: azohra/shell-linter@latest
         with:
           path: "src/*.sh"
 ```
-<br>
 
-## Input
+Run static analysis for all the shell scripts and only report issue with error severity:
+```yml
+      - name: Run Shellcheck
+        uses: azohra/shell-linter@latest
+        with:
+          path: "src/*.sh"
+          severity: "error"
+```
+
+Run analysis by using a specific version of Shell Linter:
+```yml
+      - name: Run Shellcheck
+        uses: azohra/shell-linter@v0.4.0
+```
+
+# Input
 
 ### `path`
 
 Optional. Execute lint check on a specific file or folder. Default: `.`
 
-## License
+### `severity`
+
+Optional. Specify minimum severity of errors to consider [style, info, warning, error]. Default: `style`
+
+# License
 This software is available as open source under the terms of the MIT License.
