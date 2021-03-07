@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 # shellcheck disable=SC2155
 
 input_paths="$1"
@@ -7,7 +7,7 @@ execution_mode="$3"
 my_dir=$(pwd)
 status_code="0"
 
-process_input(){      
+process_input(){
     [ -n "$execution_mode" ] && my_dir="./test_data"
 
     severity_mode="$(echo $severity_mode | tr '[:upper:]' '[:lower:]')"
@@ -26,7 +26,7 @@ process_input(){
             fi
         done
         [ -z "$execution_mode" ] && exit $status_code
-    else 
+    else
         scan_all "$my_dir"
         [ -z "$execution_mode" ] && exit $status_code
     fi
@@ -36,7 +36,7 @@ scan_file(){
     local file_path=$1
     local file=$(basename -- "$file_path")
     local first_line=$(head -n 1 "$file_path")
-    if [[ "$first_line" == "#!"* ]]; then
+    if [[ "$first_line" =~ \#\!.*/(sh|bash|dash|ksh) ]]; then
         echo
         echo "###############################################"
         echo "         Scanning $file"
@@ -56,7 +56,7 @@ scan_file(){
 
 scan_all(){
     echo "Scanning all the shell scripts at $1 🔎"
-    while IFS= read -r script 
+    while IFS= read -r script
     do
         local first_line=$(head -n 1 "$script")
         if [[ "$first_line" == "#!"* ]]; then
