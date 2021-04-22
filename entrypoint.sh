@@ -7,6 +7,17 @@ execution_mode="$3"
 my_dir=$(pwd)
 status_code="0"
 
+FAILED_SCANS=()
+
+show_failed_scans() {
+    if [[ "${#FAILED_SCANS[@]}" -gt 0 ]]; then
+        printf "\e[31m ${#FAILED_SCANS[@]} errors detected:\n"
+        for f in "${FAILED_SCANS[@]}"; do
+            printf "\t- %s\n" "$f"
+        done
+    fi
+}
+
 process_input(){
     [ -n "$execution_mode" ] && my_dir="./test_data"
 
@@ -25,12 +36,13 @@ process_input(){
                 scan_file "$path"
             fi
         done
-        [ -z "$execution_mode" ] && exit $status_code
     else
         scan_all "$my_dir"
-        [ -z "$execution_mode" ] && exit $status_code
     fi
+    show_failed_scans
+    [ -z "$execution_mode" ] && exit $status_code
 }
+
 
 scan_file(){
     local file_path=$1
@@ -48,6 +60,7 @@ scan_file(){
         else
             status_code=$exit_code
             printf "\e[31m ERROR: ShellCheck detected issues in %s.\e[0m\n" "${file_path} 🐛"
+            FAILED_SCANS+=("$file_path")
         fi
     else
         printf "\n\e[33m ⚠️  Warning: '%s' is not a valid shell script. Make sure shebang is on the first line.\e[0m\n" "$file_path"
