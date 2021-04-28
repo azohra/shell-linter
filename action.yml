@@ -1,4 +1,4 @@
-name: 'Shell Linter'
+name: 'Shellcheck scripts'
 description: 'Execute lint check on shell scripts using ShellCheck'
 author: 'ep-mobile'
 inputs:
