@@ -6,6 +6,7 @@ severity_mode="${2-style}"
 execution_mode="$3"
 my_dir=$(pwd)
 status_code="0"
+invalid_files=()
 
 process_input(){      
     [ -n "$execution_mode" ] && my_dir="./test_data"
@@ -27,7 +28,10 @@ process_input(){
         done
         [ -z "$execution_mode" ] && exit $status_code
     else 
+        echo "about to scan"
         scan_all "$my_dir"
+        echo "pre log"
+        log_invalid_files 
         [ -z "$execution_mode" ] && exit $status_code
     fi
 }
@@ -59,12 +63,20 @@ scan_all(){
     while IFS= read -r script 
     do
         local first_line=$(head -n 1 "$script")
-        if [[ "$first_line" == "#!"* ]]; then
+        if [[ "$first_line" =~ \#\!.*sh|bash|dash|ksh ]]; then
             scan_file "$script"
         else
-            printf "\n\e[33m ⚠️  Warning: '%s' is not scanned. If it is a shell script, make sure shebang is on the first line.\e[0m\n" "$script"
+            invalid_files+=( $script )
+            # printf "\n\e[33m ⚠️  Warning: '%s' is not scanned. ShellCheck only supports sh/bash/dash/ksh scripts. If '%s' is a shell script, make sure there is a proper shebang on the first line.\e[0m\n" "$script" "$script"
         fi
     done < <(find "$1" -name '*.sh' -o ! -name '*.*' -type f ! -path "$1/.git/*")
+}
+
+log_invalid_files(){
+    printf "\n\e[33m ⚠️  Warning: %d Unscanned files: \e[0m\n" "${#invalid_files[@]}"
+    for file in ${invalid_files[@]}; do
+        printf "\n\e[33m %s \e[0m\n" "$file"
+    done
 }
 
 # To avoid execution when sourcing this script for testing
