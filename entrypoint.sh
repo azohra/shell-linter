@@ -2,7 +2,7 @@
 # shellcheck disable=SC2155
 
 input_paths="$1"
-severity_mode="${2-style}"
+severity_mode="${2}"
 execution_mode="$3"
 my_dir=$(pwd)
 status_code="0"
@@ -14,7 +14,7 @@ process_input(){
     severity_mode="$(echo $severity_mode | tr '[:upper:]' '[:lower:]')"
 
     if [[ "$severity_mode" != "style" && "$severity_mode" != "info" && "$severity_mode" != "warning" && "$severity_mode" != "error" ]]; then
-        echo "Error setting unknown severity mode. Defaulting severity mode to style."
+        echo "Warning: unknown severity mode. Defaulting severity mode to style."
         severity_mode="style"
     fi
 
@@ -26,12 +26,11 @@ process_input(){
                 scan_file "$path"
             fi
         done
+        [[ ${#invalid_files[@]} -gt 0 ]] && log_invalid_files 
         [ -z "$execution_mode" ] && exit $status_code
     else 
-        echo "about to scan"
         scan_all "$my_dir"
-        echo "pre log"
-        log_invalid_files 
+        [[ ${#invalid_files[@]} -gt 0 ]] && log_invalid_files
         [ -z "$execution_mode" ] && exit $status_code
     fi
 }
@@ -40,9 +39,11 @@ scan_file(){
     local file_path=$1
     local file=$(basename -- "$file_path")
     local first_line=$(head -n 1 "$file_path")
-    if [[ "$first_line" == "#!"* ]]; then
+    local regex="\#\!.*\b(sh|bash|dash|ksh)\b"
+    if [[ "$first_line" =~ $regex ]]; then
         echo
         echo "###############################################"
+        # TODO change to ---
         echo "         Scanning $file"
         echo "###############################################"
         shellcheck "$file_path" --severity="$severity_mode"
@@ -54,29 +55,33 @@ scan_file(){
             printf "\e[31m ERROR: ShellCheck detected issues in %s.\e[0m\n" "${file_path} 🐛"
         fi
     else
-        printf "\n\e[33m ⚠️  Warning: '%s' is not a valid shell script. Make sure shebang is on the first line.\e[0m\n" "$file_path"
+        invalid_files+=( $file_path )
+        # printf "\n\e[33m ⚠️  Warning: '%s' is not a valid shell script.\e[0m\n" "$file_path"
     fi
 }
 
 scan_all(){
     echo "Scanning all the shell scripts at $1 🔎"
+    local regex="\#\!.*\b(sh|bash|dash|ksh)\b"
     while IFS= read -r script 
     do
         local first_line=$(head -n 1 "$script")
-        if [[ "$first_line" =~ \#\!.*sh|bash|dash|ksh ]]; then
+        if [[ "$first_line" =~ $regex ]]; then
             scan_file "$script"
         else
             invalid_files+=( $script )
             # printf "\n\e[33m ⚠️  Warning: '%s' is not scanned. ShellCheck only supports sh/bash/dash/ksh scripts. If '%s' is a shell script, make sure there is a proper shebang on the first line.\e[0m\n" "$script" "$script"
         fi
-    done < <(find "$1" -name '*.sh' -o ! -name '*.*' -type f ! -path "$1/.git/*")
+    done < <(find "$1" -iname '*.sh' -o -iname '*.bash' -o -iname '*.ksh' -o ! -iname '*.*' -type f ! -path "$1/.git/*")
 }
 
 log_invalid_files(){
-    printf "\n\e[33m ⚠️  Warning: %d Unscanned files: \e[0m\n" "${#invalid_files[@]}"
+    printf "\n\e[33m ⚠️  Found %d unscanned files that could potentially be supported: \e[0m\n" "${#invalid_files[@]}"
     for file in ${invalid_files[@]}; do
-        printf "\n\e[33m %s \e[0m\n" "$file"
+        printf "\n\t\e[33m %s \e[0m\n" "$file"
     done
+    printf "\n\e[33m ShellCheck only supports sh/bash/dash/ksh scripts. For supported scripts to be scanned, make sure to add a proper shebang on the first line of the script.\e[0m\n"
+
 }
 
 # To avoid execution when sourcing this script for testing
