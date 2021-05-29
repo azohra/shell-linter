@@ -43,7 +43,6 @@ scan_file(){
     if [[ "$first_line" =~ $regex ]]; then
         echo
         echo "###############################################"
-        # TODO change to ---
         echo "         Scanning $file"
         echo "###############################################"
         shellcheck "$file_path" --severity="$severity_mode"
@@ -56,7 +55,6 @@ scan_file(){
         fi
     else
         invalid_files+=( $file_path )
-        # printf "\n\e[33m ⚠️  Warning: '%s' is not a valid shell script.\e[0m\n" "$file_path"
     fi
 }
 
@@ -70,18 +68,17 @@ scan_all(){
             scan_file "$script"
         else
             invalid_files+=( $script )
-            # printf "\n\e[33m ⚠️  Warning: '%s' is not scanned. ShellCheck only supports sh/bash/dash/ksh scripts. If '%s' is a shell script, make sure there is a proper shebang on the first line.\e[0m\n" "$script" "$script"
         fi
     done < <(find "$1" -iname '*.sh' -o -iname '*.bash' -o -iname '*.ksh' -o ! -iname '*.*' -type f ! -path "$1/.git/*")
 }
 
+# Logging files with no extension that are not amongst the supported scripts or scripts that are supported but don't have a shebang.
 log_invalid_files(){
     printf "\n\e[33m ⚠️  Found %d unscanned files that could potentially be supported: \e[0m\n" "${#invalid_files[@]}"
     for file in ${invalid_files[@]}; do
         printf "\n\t\e[33m %s \e[0m\n" "$file"
     done
     printf "\n\e[33m ShellCheck only supports sh/bash/dash/ksh scripts. For supported scripts to be scanned, make sure to add a proper shebang on the first line of the script.\e[0m\n"
-
 }
 
 # To avoid execution when sourcing this script for testing
