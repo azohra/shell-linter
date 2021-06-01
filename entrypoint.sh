@@ -7,6 +7,7 @@ execution_mode="$3"
 my_dir=$(pwd)
 status_code="0"
 invalid_files=()
+scan_regex="#!.*[/ ](sh|bash|dash|ksh)$"
 
 process_input(){      
     [ -n "$execution_mode" ] && my_dir="./test_data"
@@ -39,8 +40,8 @@ scan_file(){
     local file_path=$1
     local file=$(basename -- "$file_path")
     local first_line=$(head -n 1 "$file_path")
-    local regex="\#\!.*\b(sh|bash|dash|ksh)\b"
-    if [[ "$first_line" =~ $regex ]]; then
+    
+    if [[ "$first_line" =~ $scan_regex ]]; then
         echo
         echo "###############################################"
         echo "         Scanning $file"
@@ -60,11 +61,10 @@ scan_file(){
 
 scan_all(){
     echo "Scanning all the shell scripts at $1 🔎"
-    local regex="\#\!.*\b(sh|bash|dash|ksh)\b"
     while IFS= read -r script 
     do
         local first_line=$(head -n 1 "$script")
-        if [[ "$first_line" =~ $regex ]]; then
+        if [[ "$first_line" =~ $scan_regex ]]; then
             scan_file "$script"
         else
             invalid_files+=( $script )
