@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+echo "hello"

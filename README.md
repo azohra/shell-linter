@@ -71,7 +71,7 @@ Run static analysis for all the shell scripts and only report issue with error s
 Run analysis by using a specific version of Shell Linter:
 ```yml
       - name: Run Shellcheck
-        uses: azohra/shell-linter@v0.4.0
+        uses: azohra/shell-linter@v0.5.0
 ```
 
 # Input
