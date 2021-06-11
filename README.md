@@ -70,13 +70,14 @@ Note that `exclude-paths` only accepts paths relative to your project's root dir
 
 To exclude a folder and it's content recursively just provide the path of the folder **without** a `/` at the end. In the example above, the entire folder at the path `tests/unit_tests` will be excluded from linting.
 
-#### Run static analysis for all the shell scripts and only report issue with error severity:
+#### Run static analysis for all the shell scripts and only report issues with error severity while excluding specific issues:
 ```yml
       - name: Run ShellCheck
         uses: azohra/shell-linter@latest
         with:
           path: "src/*.sh"
           severity: "error"
+          exclude: "SC1068,SC1066"
 ```
 #### Run analysis by using a specific version of Shell Linter:
 ```yml
@@ -94,6 +95,10 @@ Optional. Exclude files and folders from ShellCheck scan.
 
 ### `severity`
 Optional. Specify minimum severity of errors to consider [style, info, warning, error]. Default: `style`
+
+### `exclude`
+
+Optional. Specify shellcheck issues to exclude during scan. For more information refer to [Checks](https://github.com/koalaman/shellcheck/wiki/Checks). Default: scan all issues.
 
 # License
 This software is available as open source under the terms of the MIT License.
