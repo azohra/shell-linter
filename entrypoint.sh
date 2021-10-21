@@ -2,10 +2,12 @@
 # shellcheck disable=SC2155
 
 input_paths="$1"
-severity_mode="${2}"
-execution_mode="$3"
+severity_mode="$2"
+ignored_paths="$3"
+execution_mode="$4"
 my_dir=$(pwd)
 status_code="0"
+find_path_clauses=(! -path "${my_dir}/.git/*")
 invalid_files=()
 scan_regex="#!.*[/ ](sh|bash|dash|ksh)$"
 
@@ -19,10 +21,20 @@ process_input(){
         severity_mode="style"
     fi
 
-    if [ "$input_paths" != "." ]; then
+    if [ -n "$excluded_paths" ]; then
+        for path in $(echo "$excluded_paths" | tr "," "\n"); do
+            if [ -d "${my_dir}/$path" ]; then
+                find_path_clauses+=( ! -path "${my_dir}/$path/*")
+            else
+                find_path_clauses+=( ! -path "${my_dir}/$path" )
+            fi
+        done
+    fi
+
+    if [[ -n "$input_paths" && "$input_paths" != "." ]]; then
         for path in $(echo "$input_paths" | tr "," "\n"); do
             if [ -d "$path" ]; then
-                scan_all "$path"
+                scan_dir "$path"
             else
                 scan_file "$path"
             fi
@@ -30,7 +42,7 @@ process_input(){
         [[ ${#invalid_files[@]} -gt 0 ]] && log_invalid_files 
         [ -z "$execution_mode" ] && exit $status_code
     else 
-        scan_all "$my_dir"
+        scan_dir "$my_dir"
         [[ ${#invalid_files[@]} -gt 0 ]] && log_invalid_files
         [ -z "$execution_mode" ] && exit $status_code
     fi
@@ -59,8 +71,9 @@ scan_file(){
     fi
 }
 
-scan_all(){
+scan_dir(){
     echo "Scanning all the shell scripts at $1 🔎"
+    echo "excluded_paths:${excluded_paths[@]}"
     while IFS= read -r script 
     do
         local first_line=$(head -n 1 "$script")
@@ -69,7 +82,7 @@ scan_all(){
         else
             invalid_files+=( $script )
         fi
-    done < <(find "$1" -iname '*.sh' -o -iname '*.bash' -o -iname '*.ksh' -o ! -iname '*.*' -type f ! -path "$1/.git/*")
+    done < <(find "$1" -type f \( -iname '*.sh' -o -iname '*.bash' -o -iname '*.ksh' -o ! -iname '*.*' \) "${find_path_clauses[@]}")
 }
 
 # Logging files with no extension that are not amongst the supported scripts or scripts that are supported but don't have a shebang.
@@ -82,4 +95,4 @@ log_invalid_files(){
 }
 
 # To avoid execution when sourcing this script for testing
-[ "$0" = "${BASH_SOURCE[0]}" ] && process_input "$@"
+[ "$0" = "${BASH_SOURCE[0]}" ] && process_input 
