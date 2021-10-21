@@ -3,7 +3,7 @@
 
 input_paths="$1"
 severity_mode="$2"
-ignored_paths="$3"
+excluded_paths="$3"
 execution_mode="$4"
 my_dir=$(pwd)
 status_code="0"
@@ -73,7 +73,6 @@ scan_file(){
 
 scan_dir(){
     echo "Scanning all the shell scripts at $1 🔎"
-    echo "excluded_paths:${excluded_paths[@]}"
     while IFS= read -r script 
     do
         local first_line=$(head -n 1 "$script")

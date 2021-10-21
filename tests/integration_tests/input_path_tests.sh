@@ -1,7 +1,7 @@
 #! /bin/bash
 # shellcheck disable=SC2155
 
-source ./entrypoint.sh "" "" "--test"
+source ./entrypoint.sh "" "" "" "--test"
 
 test_execution_mode(){
     local expected_path=./test_data
@@ -19,7 +19,6 @@ test_invalid_script_with_extension(){
 
     assertContains "Actual messages:$actual Did not contain the expected message.\n" "$actual" "$expected1" 
     assertContains "Actual messages:$actual Did not contain the expected message.\n" "$actual" "$expected2" 
-
 }
 
 test_invalid_script_without_extension(){
@@ -30,7 +29,6 @@ test_invalid_script_without_extension(){
 
     assertContains "Actual messages:$actual Did not contain the expected message.\n" "$actual" "$expected1"
     assertContains "Actual messages:$actual Did not contain the expected message.\n" "$actual" "$expected2"
-
 }
 
 test_unsupported_script_without_extension(){
@@ -61,7 +59,6 @@ test_valid_file_without_shebang(){
 
     assertContains "Actual messages:$actual Did not contain the expected message.\n" "$actual" "$expected1" 
     assertContains "Actual messages:$actual Did not contain the expected message.\n" "$actual" "$expected2"
-
 }
 
 test_valid_file_input(){
@@ -114,9 +111,8 @@ test_input_files_with_wildcard() {
     assertContains "Actual messages:$actual Did not contain the expected message.\n" "$actual" "$expected2"
 }
 
-
-
 tearDown(){
    input_paths="" 
+   invalid_files=()
 }
 source ./tests/shunit2

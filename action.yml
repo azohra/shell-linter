@@ -11,7 +11,7 @@ inputs:
     required: false
     default: 'style'
   exclude_paths:
-    description: 'Exclude files and folders from linting'
+    description: 'Exclude files and folders from linting.'
     required: false
 
 runs:
