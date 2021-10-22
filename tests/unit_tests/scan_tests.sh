@@ -24,6 +24,16 @@ test_scan_unsuppoted_script(){
     assertNotContains "Actual messages:$actual Did not contain the expected message.\n" "$actual" "$expected2" 
 }
 
+test_scan_external_sourced_file(){
+    local actual=$(scan_file ./test_data/external_sources.sh)
+    local notExpected="SC1091: Not following"
+    local expected="Scanning external_sources.sh"
+
+    assertContains "Actual messages:$actual Did not contain the expected message.\n" "$actual" "$expected" 
+    assertNotContains "Actual messages:$actual\n contains the unexpected message: '$notExpected'\n" "$actual" "$notExpected" 
+
+}
+
 # scan_all() tests
 test_scan_a_directory(){
     local message1="Scanning all the shell scripts at ./test_data/script_type"
