@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - develop
+      - feature/upgrade-shellcheck
 
 jobs:
   run_tests:
@@ -12,8 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Update Shellcheck
-        run: ./src/download_shellcheck.sh
+      - name: Install Shellcheck
+        run: ./src/install_shellcheck.sh
       - name: Run tests
         run: ./tests/test_runner
         shell: bash
