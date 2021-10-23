@@ -10,7 +10,7 @@ inputs:
     description: 'Specify minimum severity of errors to consider.'
     required: false
     default: 'style'
-  exclude_paths:
+  excluded_paths:
     description: 'Exclude files and folders from linting.'
     required: false
 
@@ -20,7 +20,7 @@ runs:
   args:
     - ${{ inputs.path }}
     - ${{ inputs.severity }}
-    - ${{ inputs.exclude_paths}}
+    - ${{ inputs.excluded_paths}}
 branding:
   icon: 'check-circle'
   color: 'green'
