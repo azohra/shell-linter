@@ -90,7 +90,8 @@ log_invalid_files(){
     for file in ${invalid_files[@]}; do
         printf "\n\t\e[33m %s \e[0m\n" "$file"
     done
-    printf "\n\e[33m ShellCheck only supports sh/bash/dash/ksh scripts. For supported scripts to be scanned, make sure to add a proper shebang on the first line of the script.\e[0m\n"
+    printf "\n\e[33m ShellCheck only supports sh/bash/dash/ksh scripts. For supported scripts to be scanned, make sure to add a proper shebang on the first line of the script.\n\n To fix the warning for the unsupported scripts, use the 'excluded_paths' input. For more information check:
+    https://github.com/azohra/shell-linter#input\e[0m\n"
 }
 
 # To avoid execution when sourcing this script for testing
