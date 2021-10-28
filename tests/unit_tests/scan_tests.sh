@@ -25,7 +25,7 @@ test_scan_unsuppoted_script(){
 }
 
 test_scan_external_sourced_file(){
-    local actual=$(scan_file ./test_data/external_sources.sh)
+    local actual=$(scan_file ./test_data/test_dir/external_sources.sh)
     local notExpected="SC1091: Not following"
     local expected="Scanning external_sources.sh"
 
