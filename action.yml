@@ -11,8 +11,9 @@ inputs:
     required: false
     default: 'style'
   excluded_paths:
-    description: 'Exclude files and folders from linting.'
+    description: 'Specify files or folders to exclude during scan.'
     required: false
+    default: ''
 
 runs:
   using: 'docker'
