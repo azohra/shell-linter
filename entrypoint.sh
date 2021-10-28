@@ -46,7 +46,7 @@ scan_file(){
         echo "###############################################"
         echo "         Scanning $file"
         echo "###############################################"
-        shellcheck "$file_path" --severity="$severity_mode"
+        shellcheck -x "$file_path" --severity="$severity_mode"
         local exit_code=$?
         if [ $exit_code -eq 0 ] ; then
             printf "%b" "Successfully scanned ${file_path} 🙌\n"
