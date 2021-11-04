@@ -4,7 +4,7 @@
 source ./entrypoint.sh "" "" "" "--test"
 
 test_ignore_directories(){
-    local excluded_paths="test_dir,severity_mode"
+    local exclude_paths="test_dir,severity_mode"
     local actual_message=$(process_input)
     local message1="Scanning example_script.sh"
     local message2="Scanning test_script_info.sh"
@@ -17,7 +17,7 @@ test_ignore_directories(){
 
 test_ignore_files(){
     local input_paths="./test_data/script_type"
-    local excluded_paths="script_type/test.zsh,script_type/test_script.js,script_type/test_zsh_wsh,script_type/test_python,script_type/test_script_wosh.sh"
+    local exclude_paths="script_type/test.zsh,script_type/test_script.js,script_type/test_zsh_wsh,script_type/test_python,script_type/test_script_wosh.sh"
     local actual_message=$(process_input)
     local expected1="Scanning sample.bash"
     local expected2="Scanning test_script_wsh.sh"
@@ -29,7 +29,7 @@ test_ignore_files(){
 }
 
 test_ignore_file_and_directory(){
-    local excluded_paths="script_type,severity_mode,test_dir/invalid_script"
+    local exclude_paths="script_type,severity_mode,test_dir/invalid_script"
     local actual_message=$(process_input)
     local expected1="Scanning example_script.sh"
     local expected2="Scanning executable_script"

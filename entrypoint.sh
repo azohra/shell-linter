@@ -3,7 +3,7 @@
 
 input_paths="$1"
 severity_mode="$2"
-excluded_paths="$3"
+exclude_paths="$3"
 execution_mode="$4"
 my_dir=$(pwd)
 status_code="0"
@@ -21,8 +21,8 @@ process_input(){
         severity_mode="style"
     fi
 
-    if [ -n "$excluded_paths" ]; then
-        for path in $(echo "$excluded_paths" | tr "," "\n"); do
+    if [ -n "$exclude_paths" ]; then
+        for path in $(echo "$exclude_paths" | tr "," "\n"); do
             if [ -d "${my_dir}/$path" ]; then
                 find_path_clauses+=( ! -path "${my_dir}/$path/*")
             else
@@ -90,7 +90,7 @@ log_invalid_files(){
     for file in ${invalid_files[@]}; do
         printf "\n\t\e[33m %s \e[0m\n" "$file"
     done
-    printf "\n\e[33m ShellCheck only supports sh/bash/dash/ksh scripts. For supported scripts to be scanned, make sure to add a proper shebang on the first line of the script.\n\n To fix the warning for the unsupported scripts, use the 'excluded_paths' input. For more information check:
+    printf "\n\e[33m ShellCheck only supports sh/bash/dash/ksh scripts. For supported scripts to be scanned, make sure to add a proper shebang on the first line of the script.\n\n To fix the warning for the unsupported scripts or to ignore specific files, use the 'exclude-paths' input. For more information check:
     https://github.com/azohra/shell-linter#input\e[0m\n"
 }
 

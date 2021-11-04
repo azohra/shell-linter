@@ -18,7 +18,7 @@ test_scan_valid_script_without_extension(){
     assertContains "Actual messages:$actual Did not contain the expected message.\n" "$actual" "$expected" 
 }
 
-test_scan_unsuppoted_script(){
+test_scan_unsupported_script(){
     local expected1="Scanning test.zsh"
     local expected2="ShellCheck only supports sh/bash/dash/ksh scripts. For supported scripts to be scanned, make sure to add a proper shebang on the first line of the script."
     local actual=$(scan_file ./test_data/script_type/test.zsh)

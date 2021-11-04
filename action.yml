@@ -10,7 +10,7 @@ inputs:
     description: 'Specify minimum severity of errors to consider.'
     required: false
     default: 'style'
-  excluded_paths:
+  exclude-paths:
     description: 'Specify files or folders to exclude during scan.'
     required: false
     default: ''
@@ -21,7 +21,7 @@ runs:
   args:
     - ${{ inputs.path }}
     - ${{ inputs.severity }}
-    - ${{ inputs.excluded_paths}}
+    - ${{ inputs.exclude-paths}}
 branding:
   icon: 'check-circle'
   color: 'green'
