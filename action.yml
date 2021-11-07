@@ -10,12 +10,18 @@ inputs:
     description: 'Specify minimum severity of errors to consider.'
     required: false
     default: 'style'
+  exclude-paths:
+    description: 'Specify files or folders to exclude during scan.'
+    required: false
+    default: ''
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.path }}
     - ${{ inputs.severity }}
+    - ${{ inputs.exclude-paths}}
 branding:
   icon: 'check-circle'
   color: 'green'
