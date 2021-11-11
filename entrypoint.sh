@@ -2,10 +2,12 @@
 # shellcheck disable=SC2155
 
 input_paths="$1"
-severity_mode="${2}"
-execution_mode="$3"
+severity_mode="$2"
+exclude_paths="$3"
+execution_mode="$4"
 my_dir=$(pwd)
 status_code="0"
+find_path_clauses=(! -path "${my_dir}/.git/*")
 invalid_files=()
 scan_regex="#!.*[/ ](sh|bash|dash|ksh)$"
 
@@ -19,10 +21,20 @@ process_input(){
         severity_mode="style"
     fi
 
-    if [ "$input_paths" != "." ]; then
+    if [ -n "$exclude_paths" ]; then
+        for path in $(echo "$exclude_paths" | tr "," "\n"); do
+            if [ -d "${my_dir}/$path" ]; then
+                find_path_clauses+=( ! -path "${my_dir}/$path/*")
+            else
+                find_path_clauses+=( ! -path "${my_dir}/$path" )
+            fi
+        done
+    fi
+
+    if [[ -n "$input_paths" && "$input_paths" != "." ]]; then
         for path in $(echo "$input_paths" | tr "," "\n"); do
             if [ -d "$path" ]; then
-                scan_all "$path"
+                scan_dir "$path"
             else
                 scan_file "$path"
             fi
@@ -30,7 +42,7 @@ process_input(){
         [[ ${#invalid_files[@]} -gt 0 ]] && log_invalid_files 
         [ -z "$execution_mode" ] && exit $status_code
     else 
-        scan_all "$my_dir"
+        scan_dir "$my_dir"
         [[ ${#invalid_files[@]} -gt 0 ]] && log_invalid_files
         [ -z "$execution_mode" ] && exit $status_code
     fi
@@ -46,7 +58,7 @@ scan_file(){
         echo "###############################################"
         echo "         Scanning $file"
         echo "###############################################"
-        shellcheck "$file_path" --severity="$severity_mode"
+        shellcheck -x "$file_path" --severity="$severity_mode"
         local exit_code=$?
         if [ $exit_code -eq 0 ] ; then
             printf "%b" "Successfully scanned ${file_path} 🙌\n"
@@ -59,7 +71,7 @@ scan_file(){
     fi
 }
 
-scan_all(){
+scan_dir(){
     echo "Scanning all the shell scripts at $1 🔎"
     while IFS= read -r script 
     do
@@ -69,7 +81,7 @@ scan_all(){
         else
             invalid_files+=( $script )
         fi
-    done < <(find "$1" -iname '*.sh' -o -iname '*.bash' -o -iname '*.ksh' -o ! -iname '*.*' -type f ! -path "$1/.git/*")
+    done < <(find "$1" -type f \( -iname '*.sh' -o -iname '*.bash' -o -iname '*.ksh' -o ! -iname '*.*' \) "${find_path_clauses[@]}")
 }
 
 # Logging files with no extension that are not amongst the supported scripts or scripts that are supported but don't have a shebang.
@@ -78,8 +90,9 @@ log_invalid_files(){
     for file in ${invalid_files[@]}; do
         printf "\n\t\e[33m %s \e[0m\n" "$file"
     done
-    printf "\n\e[33m ShellCheck only supports sh/bash/dash/ksh scripts. For supported scripts to be scanned, make sure to add a proper shebang on the first line of the script.\e[0m\n"
+    printf "\n\e[33m ShellCheck only supports sh/bash/dash/ksh scripts. For supported scripts to be scanned, make sure to add a proper shebang on the first line of the script.\n\n To fix the warning for the unsupported scripts or to ignore specific files, use the 'exclude-paths' input. For more information check:
+    https://github.com/azohra/shell-linter#input\e[0m\n"
 }
 
 # To avoid execution when sourcing this script for testing
-[ "$0" = "${BASH_SOURCE[0]}" ] && process_input "$@"
+[ "$0" = "${BASH_SOURCE[0]}" ] && process_input 

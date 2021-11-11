@@ -1,9 +1,10 @@
-FROM alpine:3.10.3
+FROM alpine:3.13.6
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.11/community" >> /etc/apk/repositories; \
-    apk update && apk add --no-cache bash shellcheck=0.7.0-r1
+RUN apk update && apk add --no-cache bash
+RUN bash --version 
 
-RUN bash --version && shellcheck --version
+COPY ./src/install_shellcheck.sh ./install_shellcheck.sh
+RUN ./install_shellcheck.sh
 
 COPY entrypoint.sh /entrypoint.sh
 

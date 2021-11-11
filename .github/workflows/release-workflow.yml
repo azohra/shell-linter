@@ -21,8 +21,8 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ steps.app-version.outputs.VERSION }}
         commit: master
-        name: Shell Linter v0.5.0
-        bodyFile: ./docs/release_notes/v0.5.0.md
+        name: Shell Linter ${{ steps.app-version.outputs.VERSION }}
+        bodyFile: ./docs/release_notes/v0.6.0.md
 
     - name: Update latest tag
       run: ./src/tagging.sh ${{ secrets.GITHUB_TOKEN }}
