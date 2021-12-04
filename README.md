@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-      - uses: actions/checkout@v1
+        uses: actions/checkout@v1
       - name: Run Shellcheck
         uses: azohra/shell-linter@latest
 ```
