@@ -13,7 +13,7 @@ A GitHub Action that performs static analysis for shell scripts using [ShellChec
 
 # Usage
 
-Shell Linter can perform static analysis in various ways. By default it scans all the Shellcheck-supported shell scripts (sh/bash/dash/ksh) in your project. However, you can use the `path` parameter to scan a specific file or folder or use the `exclude-paths` parameter to exclude files or folders from the scan. With Shell Linter, you can also specify the minimum severity of errors to consider using the `severity` parameter. Specific use cases along with examples are shown below:
+Shell Linter can perform static analysis in various ways. By default it scans all the ShellCheck-supported shell scripts (sh/bash/dash/ksh) in your project. However, you can use the `path` parameter to scan a specific file or folder or use the `exclude-paths` parameter to exclude files or folders from the scan. With Shell Linter, you can also specify the minimum severity of errors to consider using the `severity` parameter. Specific use cases along with examples are shown below:
 
 #### Run static analysis for all the supported shell scripts in your repository:
 ```yml
@@ -23,13 +23,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v1
-      - name: Run Shellcheck
+
+      - name: Run ShellCheck
         uses: azohra/shell-linter@latest
 ```
 
 #### Run static analysis for a single shell script:
 ```yml
-      - name: Run Shellcheck
+      - name: Run ShellCheck
         uses: azohra/shell-linter@latest
         with:
           path: "setup.sh"
@@ -37,7 +38,7 @@ jobs:
 
 #### Run static analysis for multiple shell scripts **with or without** extension:
 ```yml
-      - name: Run Shellcheck
+      - name: Run ShellCheck
         uses: azohra/shell-linter@latest
         with:
           path: "setup,deploy.sh"
@@ -45,7 +46,7 @@ jobs:
 
 #### Run static analysis for all the shell scripts in a folder:
 ```yml
-      - name: Run Shellcheck
+      - name: Run ShellCheck
         uses: azohra/shell-linter@latest
         with:
           path: "src"
@@ -53,14 +54,14 @@ jobs:
 
 #### Run static analysis using a **wildcard** path:
 ```yml
-      - name: Run Shellcheck
+      - name: Run ShellCheck
         uses: azohra/shell-linter@latest
         with:
           path: "src/*.sh"
 ```
 #### Exclude files and folders from the static analysis:
 ```yml
-      - name: Run Shellcheck
+      - name: Run ShellCheck
         uses: azohra/shell-linter@latest
         with:
           exclude-paths: "src/setup.sh,tests/unit_tests" 
@@ -71,7 +72,7 @@ To exclude a folder and it's content recursively just provide the path of the fo
 
 #### Run static analysis for all the shell scripts and only report issue with error severity:
 ```yml
-      - name: Run Shellcheck
+      - name: Run ShellCheck
         uses: azohra/shell-linter@latest
         with:
           path: "src/*.sh"
@@ -79,8 +80,8 @@ To exclude a folder and it's content recursively just provide the path of the fo
 ```
 #### Run analysis by using a specific version of Shell Linter:
 ```yml
-      - name: Run Shellcheck
-        uses: azohra/shell-linter@v0.5.0
+      - name: Run ShellCheck
+        uses: azohra/shell-linter@v0.6.0
 ```
 
 # Input
@@ -89,7 +90,7 @@ To exclude a folder and it's content recursively just provide the path of the fo
 Optional. Execute lint check on a specific file or folder. Default: `.`
 
 ### `exclude-paths`
-Optional. Exclude files and folders from Shellcheck scan. 
+Optional. Exclude files and folders from ShellCheck scan. 
 
 ### `severity`
 Optional. Specify minimum severity of errors to consider [style, info, warning, error]. Default: `style`
