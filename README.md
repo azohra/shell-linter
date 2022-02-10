@@ -23,6 +23,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v1
+
       - name: Run ShellCheck
         uses: azohra/shell-linter@latest
 ```
