@@ -4,7 +4,7 @@
 input_paths="$1"
 severity_mode="$2"
 exclude_paths="$3"
-exclude_code="$4"
+exclude_issues="$4"
 execution_mode="$5"
 my_dir=$(pwd)
 status_code="0"
@@ -33,8 +33,8 @@ process_input(){
     fi
 
     optional_params=""
-    if [[ ! -z "$exclude_code" ]]; then
-        optional_params="--exclude $exclude_code"
+    if [[ ! -z "$exclude_issues" ]]; then
+        optional_params="--exclude $exclude_issues"
     fi
 
     if [[ -n "$input_paths" && "$input_paths" != "." ]]; then

@@ -77,8 +77,10 @@ To exclude a folder and it's content recursively just provide the path of the fo
         with:
           path: "src/*.sh"
           severity: "error"
-          exclude: "SC1068,SC1066"
+          exclude-issues: "SC1068,SC1066"
 ```
+Note that `exclude-issues` contains a list of issues to ignore (example: "SC1068") comma-separated without any spaces.
+
 #### Run analysis by using a specific version of Shell Linter:
 ```yml
       - name: Run ShellCheck
@@ -87,18 +89,17 @@ To exclude a folder and it's content recursively just provide the path of the fo
 
 # Input
 
-### `path`
-Optional. Execute lint check on a specific file or folder. Default: `.`
+### `exclude-issues`
+Optional. Specify shellcheck issues to exclude during scan. For more information refer to [Checks](https://github.com/koalaman/shellcheck/wiki/Checks). Default: scan all issues.
 
 ### `exclude-paths`
 Optional. Exclude files and folders from ShellCheck scan. 
 
+### `path`
+Optional. Execute lint check on a specific file or folder. Default: `.`
+
 ### `severity`
 Optional. Specify minimum severity of errors to consider [style, info, warning, error]. Default: `style`
-
-### `exclude`
-
-Optional. Specify shellcheck issues to exclude during scan. For more information refer to [Checks](https://github.com/koalaman/shellcheck/wiki/Checks). Default: scan all issues.
 
 # License
 This software is available as open source under the terms of the MIT License.

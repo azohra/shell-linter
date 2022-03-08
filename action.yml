@@ -14,7 +14,7 @@ inputs:
     description: 'Specify files or folders to exclude during scan.'
     required: false
     default: ''
-  exclude:
+  exclude-issues:
     description: 'Specify shellcheck issues to exclude during scan.'
     required: false
     default: ''
@@ -25,7 +25,7 @@ runs:
     - ${{ inputs.path }}
     - ${{ inputs.severity }}
     - ${{ inputs.exclude-paths}}
-    - ${{ inputs.exclude }}
+    - ${{ inputs.exclude-issues }}
 branding:
   icon: 'check-circle'
   color: 'green'
