@@ -6,10 +6,10 @@ test_exclude_no_error(){
     input_paths="./test_data/exclude_issues/test_script_exclude_none.sh"
     severity_mode="style"
     exclude_issues=""
-    local expected_message="SC2154"
+    local expected_error="SC2154"
     local actual_message=$(process_input)
 
-    assertContains "Actual messages:$actual_message Did not find the message.\n" "$actual_message" "$expected_message"
+    assertContains "Actual messages:$actual_message Did not find the message.\n" "$actual_message" "$expected_error"
 }
 
 test_exclude_one_error(){
