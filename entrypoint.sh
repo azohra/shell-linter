@@ -4,7 +4,8 @@
 input_paths="$1"
 severity_mode="$2"
 exclude_paths="$3"
-execution_mode="$4"
+exclude_issues="$4"
+execution_mode="$5"
 my_dir=$(pwd)
 status_code="0"
 find_path_clauses=(! -path "${my_dir}/.git/*")
@@ -29,6 +30,11 @@ process_input(){
                 find_path_clauses+=( ! -path "${my_dir}/$path" )
             fi
         done
+    fi
+
+    optional_params=""
+    if [[ ! -z "$exclude_issues" ]]; then
+        optional_params="--exclude $exclude_issues"
     fi
 
     if [[ -n "$input_paths" && "$input_paths" != "." ]]; then
@@ -58,7 +64,7 @@ scan_file(){
         echo "###############################################"
         echo "         Scanning $file"
         echo "###############################################"
-        shellcheck -x "$file_path" --severity="$severity_mode"
+        shellcheck -x "$file_path" --severity="$severity_mode" $optional_params
         local exit_code=$?
         if [ $exit_code -eq 0 ] ; then
             printf "%b" "Successfully scanned ${file_path} 🙌\n"
