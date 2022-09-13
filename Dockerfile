@@ -1,11 +1,10 @@
-FROM alpine:3.13.6
-
-RUN apk update && apk add --no-cache bash
-RUN bash --version 
+FROM alpine:3.16
 
 COPY ./src/install_shellcheck.sh ./install_shellcheck.sh
-RUN ./install_shellcheck.sh
-
 COPY entrypoint.sh /entrypoint.sh
+
+RUN apk add --no-cache bash; \
+    bash --version; \
+    ./install_shellcheck.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
